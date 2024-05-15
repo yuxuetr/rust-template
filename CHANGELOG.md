@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file. See [conven
 ### Bug Fixes
 
 - Github Actions generate CHANGELOG.md workflow - ([853df04](https://github.com/yuxuetr/rust-template/commit/853df04559ca953cd246a805faa8d0e95b5fdb12)) - yuxuetr
+- CHANGELOG.md commit - ([633d595](https://github.com/yuxuetr/rust-template/commit/633d59521d75591ae0a057abe89aab8f5e479dfd)) - yuxuetr
+
+### Features
+
+- genrated new CHANGELOG.md - ([1be97c8](https://github.com/yuxuetr/rust-template/commit/1be97c8088898d17675739b924695cfa6712972a)) - yuxuetr
 
 ### Other
 
