@@ -47,14 +47,14 @@ jobs:
         env:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
-      - name: Commit CHANGELOG.md
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          set +e
-          git add CHANGELOG.md
-          git commit -m "Update changelog"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git main
+      #- name: Commit CHANGELOG.md
+        #  run: |
+        #  git config user.name 'github-actions[bot]'
+        #  git config user.email 'github-actions[bot]@users.noreply.github.com'
+        #  set +e
+        #  git add CHANGELOG.md
+        #  git commit -m "Update changelog"
+        #  git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git main
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
