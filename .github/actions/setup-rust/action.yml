@@ -1,0 +1,18 @@
+name: 'Setup Rust'
+description: 'Install Rust toolchain and set profile'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies and Rust
+      shell: bash
+      run: |
+        # 1. Update and install core build tools including linker (build-essential)
+        apt-get update && apt-get install -y curl ca-certificates git build-essential
+        
+        # 2. Install Rust
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal -c llvm-tools-preview
+        
+        # 3. Setup default toolchain and components
+        $CARGO_HOME/bin/rustup default stable
+        $CARGO_HOME/bin/rustup component add rustfmt clippy
