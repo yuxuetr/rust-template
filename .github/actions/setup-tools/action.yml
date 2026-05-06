@@ -6,12 +6,13 @@ runs:
   steps:
     - name: Install tools
       shell: bash
-      env:
-        RUSTUP_HOME: /github/workspace/.wrkflw/home/.rustup
-        CARGO_HOME: /github/workspace/.wrkflw/cargo-home
       run: |
+        SUDO=""
+        if [ "`id -u`" -ne 0 ]; then
+            SUDO="sudo"
+        fi
         if ! command -v curl &> /dev/null; then
-            apt-get update && apt-get install -y curl ca-certificates
+            $SUDO apt-get update && $SUDO apt-get install -y curl ca-certificates
         fi
         curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-        $CARGO_HOME/bin/cargo binstall -y cargo-llvm-cov cargo-nextest
+        cargo binstall -y cargo-llvm-cov cargo-nextest

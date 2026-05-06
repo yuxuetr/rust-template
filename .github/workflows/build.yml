@@ -4,18 +4,12 @@ on:
   push:
     branches:
       - main
-    tags:
-      - v*
   pull_request:
     branches:
       - main
 
 permissions:
   contents: write
-
-env:
-  RUSTUP_HOME: /github/workspace/.wrkflw/home/.rustup
-  CARGO_HOME: /github/workspace/.wrkflw/cargo-home
 
 jobs:
   build-rust:
@@ -35,6 +29,8 @@ jobs:
       - name: Setup Tools (Custom)
         uses: ./.github/actions/setup-tools
         
+      - uses: Swatinem/rust-cache@v2
+      
       - name: Check code format
         run: cargo fmt -- --check
         
@@ -46,8 +42,12 @@ jobs:
         
       - name: Execute rust tests
         run: |
+          SUDO=""
+          if [ "`id -u`" -ne 0 ]; then
+              SUDO="sudo"
+          fi
           if ! command -v cc &> /dev/null; then
-              apt-get update && apt-get install -y build-essential
+              $SUDO apt-get update && $SUDO apt-get install -y build-essential
           fi
           cargo nextest run --all-features
         

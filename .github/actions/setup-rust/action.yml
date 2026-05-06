@@ -7,12 +7,18 @@ runs:
     - name: Install dependencies and Rust
       shell: bash
       run: |
-        # 1. Update and install core build tools including linker (build-essential)
-        apt-get update && apt-get install -y curl ca-certificates git build-essential
-        
-        # 2. Install Rust
+        SUDO=""
+        if [ "`id -u`" -ne 0 ]; then
+            SUDO="sudo"
+        fi
+        if ! command -v curl &> /dev/null; then
+            $SUDO apt-get update && $SUDO apt-get install -y curl ca-certificates git build-essential
+        fi
+        export RUSTUP_HOME="${RUSTUP_HOME:-$HOME/.rustup}"
+        export CARGO_HOME="${CARGO_HOME:-$HOME/.cargo}"
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal -c llvm-tools-preview
-        
-        # 3. Setup default toolchain and components
         $CARGO_HOME/bin/rustup default stable
         $CARGO_HOME/bin/rustup component add rustfmt clippy
+        echo "RUSTUP_HOME=$RUSTUP_HOME" >> $GITHUB_ENV
+        echo "CARGO_HOME=$CARGO_HOME" >> $GITHUB_ENV
+        echo "$CARGO_HOME/bin" >> $GITHUB_PATH
