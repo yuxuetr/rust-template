@@ -1,6 +1,5 @@
-name: 'Setup Rust Tools'
-description: 'Install nextest and cargo-llvm-cov'
-
+name: "Setup Rust Tools"
+description: "Install nextest and cargo-llvm-cov"
 runs:
   using: "composite"
   steps:
@@ -14,5 +13,6 @@ runs:
         if ! command -v curl &> /dev/null; then
             $SUDO apt-get update && $SUDO apt-get install -y curl ca-certificates
         fi
-        curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-        cargo binstall -y cargo-llvm-cov cargo-nextest
+        curl -L --proto '=https' --tlsv1.2 -sSf https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-aarch64-unknown-linux-musl.tgz | tar -xzf - -C /tmp
+        $SUDO mv /tmp/cargo-binstall /usr/local/bin/
+        /usr/local/cargo/bin/cargo binstall -y cargo-llvm-cov cargo-nextest
